@@ -3,3 +3,5 @@
 ## UI design
 
 [open design file in Figma](https://www.figma.com/file/BCl0y1PwSO7op6HTehwOOz/weather-app?node-id=0%3A1)
+
+![Alt text](/ui.svg?raw=true "Optional Title")
