@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+
+@tailwind utilities;
+
+.search-input {
+  background: rgba(66, 97, 137, 0.2);
+  border: 2px solid #616c8c;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+.search-button {
+  background: #616c8c;
+  border-radius: 20px;
+}
