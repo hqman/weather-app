@@ -7,7 +7,7 @@ function IndexPage() {
     <div className="text-white bg-gray-500 overflow-y-auto sm:h-screen font-light">
       <div className="bg-app-primary h-full mx-auto pb-4 max-w-sm">
         <h2 className="text-app-five font-semibold text-2xl text-center pt-6 mb-4">
-          Weather in gatsby-browser.jsyour city
+          Weather in your city
         </h2>
         <header className=" flex flex-col text-center items-center">
           <div className="relative w-full h-8  px-6 mb-4">
