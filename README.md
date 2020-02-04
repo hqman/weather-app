@@ -4,13 +4,12 @@
 
 [demo url](https://weather-app.1033523998.now.sh/)
 
-## install
-
-yarn install
-
 ## run
 
-yarn start
+```
+  yarn install
+  yarn start
+```
 
 ## logic
 
