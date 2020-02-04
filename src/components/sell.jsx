@@ -12,7 +12,7 @@ export default function Sell({ items }) {
       jacketDay = item.time;
     }
   });
-  console.log("umbrellaDay", umbrellaDay);
+  // console.log("umbrellaDay", umbrellaDay);
   let borderCls = "";
   if (jacketDay) {
     borderCls = "border-b border-app-six";

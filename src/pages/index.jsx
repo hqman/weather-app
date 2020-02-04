@@ -28,6 +28,7 @@ function IndexPage() {
     1000,
     [city]
   );
+
   useEffect(() => {
     async function fetchData() {
       if (!search) return;
