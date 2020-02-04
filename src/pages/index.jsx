@@ -1,13 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sell from "../components/sell";
 import Weather from "../components/weather";
 import Footer from "../components/footer";
 
+import Loading from "../components/loading";
+
+import { useDebounce } from "react-use";
+import { timeConverter, fToC } from "../utils/data";
+import getIcon from "../components/icons";
+
+const opApiToken = "3e6ea0a462437df74dd184ef2af4f068";
+const opApiUrl = "http://api.openweathermap.org/data/2.5";
+
+const dsApiUrl =
+  "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/a78984313e6496a2f5cd733aaa118703";
+
 function IndexPage() {
-  const [theme, setTheme] = useState("dark");
+  const [days, setDays] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [city, setCity] = useState("Suzhou");
+  const [search, setSearch] = useState("Suzhou");
+
+  const [, cancel] = useDebounce(
+    () => {
+      setSearch(city);
+    },
+    1000,
+    [city]
+  );
+  useEffect(() => {
+    async function fetchData() {
+      if (!search) return;
+      const res = await fetch(
+        `${opApiUrl}/forecast?q=${search}&appid=${opApiToken}&cnt=1`,
+        {
+          method: "GET"
+        }
+      );
+      const cityData = await res.json();
+      if (!cityData || !cityData.city) {
+        setIsLoading(false);
+        return;
+      }
+      // console.log(cityData);
+      let lat = 31.3114;
+      let lon = 120.6181;
+      if (cityData && cityData.city && cityData.city.coord) {
+        // console.log(cityData);
+
+        if (cityData.city.coord) {
+          const coord = cityData.city.coord;
+          lat = coord.lat;
+          lon = coord.lon;
+        }
+
+        const res = await fetch(`${dsApiUrl}/${lat},${lon}`, {
+          method: "GET"
+        });
+        const weatherData = await res.json();
+        let days = [];
+        // console.log(weatherData);
+        if (weatherData.daily && weatherData.daily.data) {
+          weatherData.daily.data.forEach((item, index) => {
+            if (index <= 4) {
+              days[index] = {
+                time: timeConverter(item.time),
+                min: fToC(item.temperatureMin).toFixed(0),
+                max: fToC(item.temperatureMax).toFixed(0),
+                icon: getIcon(item.icon),
+                iconStr: item.icon
+              };
+            }
+          });
+          setDays(days);
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+        return;
+      }
+      setIsLoading(false);
+    }
+    setIsLoading(true);
+    fetchData();
+  }, [search]);
 
   return (
-    <div className="text-white bg-gray-500 overflow-y-auto  md:h-screen font-light">
+    <div className="text-white bg-gray-500 overflow-y-auto h-full md:h-screen font-light">
       <div className="bg-app-primary h-full mx-auto pb-4 max-w-sm">
         <h2 className="text-app-five font-semibold text-2xl text-center pt-6 mb-4">
           Weather in your city
@@ -23,6 +102,14 @@ function IndexPage() {
               </svg>
             </div>
             <input
+              onChange={({ currentTarget }) => {
+                if (currentTarget.value) {
+                  setIsLoading(true);
+                }
+                setDays([]);
+                setCity(currentTarget.value);
+              }}
+              value={city}
               type="search"
               placeholder="Enter search "
               className="block w-full bg-app-four focus:outline-none focus:bg-app-four focus:shadow focus:text-white text-gray-700 font-bold rounded-sm pl-12 pr-4 py-3"
@@ -30,8 +117,23 @@ function IndexPage() {
           </div>
         </header>
         <main>
-          <Sell />
-          <Weather />
+          <Loading isLoading={isLoading} />
+          {days.length > 0 ? (
+            <div>
+              <Sell items={days} />
+              <Weather items={days} />
+            </div>
+          ) : (
+            <div className="" style={{ minHeight: "75vh" }}>
+              {city === "" ? null : (
+                <div className="bg-app-four rounded-sm mx-6 my-8 px-4 py-4">
+                  <h2 className="text-center mx-auto my-12 text-xl text-gray-400">
+                    not data
+                  </h2>
+                </div>
+              )}
+            </div>
+          )}
         </main>
         <Footer />
       </div>
