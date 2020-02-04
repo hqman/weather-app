@@ -16,7 +16,7 @@
 1. Get geo location from openweathermap api.
 2. Get daily weather data from darksky api.
 3. If weather is rain or snow buy umbrella.
-4. If temperature is lower than 10buy jacket.
+4. If temperature is lower than 10 degree buy jacket.
 
 ## UI design
 
