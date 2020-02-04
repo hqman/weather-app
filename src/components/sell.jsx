@@ -2,11 +2,10 @@ import React from "react";
 
 export default function Sell({ items }) {
   if (items.length === 0) return null;
-  // debugger;
   let jacketDay = null;
   let umbrellaDay = null;
   items.forEach(item => {
-    if (item.iconStr === "rain" && !umbrellaDay) {
+    if ((item.iconStr === "rain" || item.iconStr === "snow") && !umbrellaDay) {
       umbrellaDay = item.time;
     }
     if (item.max < 10 && !jacketDay) {

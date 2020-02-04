@@ -10,7 +10,7 @@ import { timeConverter, fToC } from "../utils/data";
 import getIcon from "../components/icons";
 
 const opApiToken = "3e6ea0a462437df74dd184ef2af4f068";
-const opApiUrl = "http://api.openweathermap.org/data/2.5";
+const opApiUrl = "https://api.openweathermap.org/data/2.5";
 
 const dsApiUrl =
   "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/a78984313e6496a2f5cd733aaa118703";
@@ -117,7 +117,8 @@ function IndexPage() {
           </div>
         </header>
         <main>
-          <Loading isLoading={isLoading} />
+          <Loading isLoading={isLoading} search={search} />
+
           {days.length > 0 ? (
             <div>
               <Sell items={days} />
@@ -125,11 +126,15 @@ function IndexPage() {
             </div>
           ) : (
             <div className="" style={{ minHeight: "75vh" }}>
-              {city === "" ? null : (
-                <div className="bg-app-four rounded-sm mx-6 my-8 px-4 py-4">
-                  <h2 className="text-center mx-auto my-12 text-xl text-gray-400">
-                    not data
-                  </h2>
+              {isLoading ? null : (
+                <div>
+                  {city === "" ? null : (
+                    <div className="bg-app-four rounded-sm mx-6 my-8 px-4 py-4">
+                      <h2 className="text-center mx-auto my-12 text-xl text-gray-400">
+                        not data
+                      </h2>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

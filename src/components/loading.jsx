@@ -1,7 +1,11 @@
 import React from "react";
 
-export default function Loading({ isLoading }) {
+export default function Loading({ isLoading, search }) {
   // style={{ top: 116, left: "42%" }}
+  if (!search) {
+    return null;
+  }
+
   return (
     <div className="flex items-center justify-center pt-2">
       <div className="absolute text-white h-4 ">
